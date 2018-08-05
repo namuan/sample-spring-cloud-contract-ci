@@ -1,0 +1,26 @@
+node {
+   def mvnHome
+   stage('Preparation') { // for display purposes
+      // Get some code from a GitHub repository
+      git 'https://github.com/namuan/sample-spring-cloud-contract-ci.git'
+      // Get the Maven tool.
+      // ** NOTE: This 'M3' Maven tool must be configured
+      // **       in the global configuration.
+      mvnHome = tool 'M3'
+   }
+   stage('Publish') {
+      def server = Artifactory.server 'artifactory'
+      def rtMaven = Artifactory.newMavenBuild()
+      rtMaven.tool = 'M3'
+      rtMaven.resolver server: server, releaseRepo: 'libs-release', snapshotRepo: 'libs-snapshot'
+      rtMaven.deployer server: server, releaseRepo: 'libs-release-local', snapshotRepo: 'libs-snapshot-local'
+    // Need to comment out the following line to include maven-metadata.xml
+    //   rtMaven.deployer.artifactDeploymentPatterns.addInclude("*stubs*")
+      def buildInfo = rtMaven.run pom: 'person-service/pom.xml', goals: 'clean install'
+      rtMaven.deployer.deployArtifacts buildInfo
+      server.publishBuildInfo buildInfo
+   }
+
+   // The next step is to setup another job with URL Trigger to monitor
+   http://<<host>>/artifactory/libs-snapshot-local/pl/piomin/services/person-service/maven-metadata.xml
+}
