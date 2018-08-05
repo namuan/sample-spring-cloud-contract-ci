@@ -22,5 +22,5 @@ node {
    }
 
    // The next step is to setup another job with URL Trigger to monitor
-   http://<<host>>/artifactory/libs-snapshot-local/pl/piomin/services/person-service/maven-metadata.xml
+   // http://<<host>>/artifactory/libs-snapshot-local/pl/piomin/services/person-service/maven-metadata.xml
 }
