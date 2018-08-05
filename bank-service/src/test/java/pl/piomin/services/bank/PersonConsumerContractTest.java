@@ -9,14 +9,16 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.cloud.contract.stubrunner.spring.AutoConfigureStubRunner;
 import org.springframework.cloud.contract.stubrunner.spring.StubRunnerProperties.StubsMode;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import pl.piomin.services.bank.client.PersonClient;
 import pl.piomin.services.bank.model.Person;
 
 @RunWith(SpringRunner.class)
+@ActiveProfiles("test")
 @SpringBootTest(webEnvironment = WebEnvironment.NONE)
-@AutoConfigureStubRunner(ids = {"pl.piomin.services:person-service:+:stubs:8090"}, consumerName = "bank-consumer",  stubsPerConsumer = true, stubsMode = StubsMode.REMOTE, repositoryRoot = "http://192.168.99.100:8081/artifactory/libs-snapshot-local")
+@AutoConfigureStubRunner(ids = {"pl.piomin.services:person-service:+:stubs:8090"}, consumerName = "bank-consumer",  stubsPerConsumer = true)
 @DirtiesContext
 public class PersonConsumerContractTest {
 

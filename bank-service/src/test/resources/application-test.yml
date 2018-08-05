@@ -1,0 +1,5 @@
+stubrunner:
+  stubsMode: REMOTE
+  repositoryRoot: "http://<<localhost>>:8081/artifactory/libs-snapshot-local"
+  username: $ARTIFACTORY_USER
+  password: $ARTIFACTORY_PASS
